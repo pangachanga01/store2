@@ -1,0 +1,20 @@
+FROM node:18-alpine
+
+WORKDIR /app
+
+# Copy package files and install dependencies
+COPY package*.json ./
+RUN npm install
+
+# Install curl for debugging purposes
+RUN apk add --no-cache curl
+
+# Copy the rest of the frontend application source code
+COPY . .
+
+# Expose the Vite development server port
+EXPOSE 5173
+
+# Run the development server and bind it to all network interfaces
+# This is crucial for accessing the server from outside the container
+CMD ["npm", "run", "dev", "--", "--host"]
